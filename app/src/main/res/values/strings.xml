@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Currency</string>
+    <string name="login_or_sign_up">Login or Sign up to continue</string>
+    <string name="user_name">User name</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="invalid_user_name">Invalid user name</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="user_already_exist">User already exist</string>
+    <string name="wrong_user_or_password">Wrong user name or password. Please try again</string>
+    <string name="your_personal_page">Your personal page</string>
+    <string name="notes">Notes</string>
+    <string name="currency_converter">Currency converter</string>
+    <string name="sign_out">Log Out</string>
+    <string name="pick_from">From:</string>
+    <string name="pick_to">To:</string>
+    <string name="amount">Amount</string>
+    <string name="get_countries_error">Error getting countries</string>
+    <string name="convert">Convert</string>
+    <string name="zero">0.0</string>
+    <string name="get_rates_error">Error getting rates</string>
+    <string name="result">Result</string>
+    <string name="income">Income</string>
+    <string name="expenses">Expenses</string>
+    <string name="add_note">Add Note</string>
+    <string name="set_amount">Set amount</string>
+    <string name="save">Save</string>
+</resources>
