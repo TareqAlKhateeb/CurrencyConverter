@@ -41,12 +41,13 @@ class ConverterActivity : AppCompatActivity() {
         countriesList = CountriesSQLiteManager.getSQLiteData()
         countriesStringList = getCountriesAsStringArray(countriesList)
         if (!countriesStringList.isNullOrEmpty()) {
-            setupSpinner(countriesStringList!!, fromSpinner)
-            setupSpinner(countriesStringList!!, toSpinner)
+            val sortedList = countriesStringList!!.sortedBy { it }
+            setupSpinner(sortedList, fromSpinner)
+            setupSpinner(sortedList, toSpinner)
         }
     }
 
-    private fun setupSpinner(countriesStringList: ArrayList<String>, spinner: Spinner) {
+    private fun setupSpinner(countriesStringList: List<String>, spinner: Spinner) {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countriesStringList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
@@ -62,12 +63,21 @@ class ConverterActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                val selectedCountry = countriesList?.results?.values?.map { it }?.get(position)
+                var selectedCountry = ""
+                var currencySymbol = ""
+                val sortedList = countriesStringList!!.sortedBy { it }
+                val selectedItem = sortedList[position]
+                for (country in countriesList?.results!!.values) {
+                    if (country.name == selectedItem) {
+                        selectedCountry = country.currencyID.toString()
+                        currencySymbol = country.currencySymbol.toString()
+                    }
+                }
                 if (spinner.tag == FROM_TAG) {
-                    fromCountry = selectedCountry?.currencyID
+                    fromCountry = selectedCountry
                 } else {
-                    toCountry = selectedCountry?.currencyID
-                    toCountrySymbol = selectedCountry?.currencySymbol
+                    toCountry = selectedCountry
+                    toCountrySymbol = currencySymbol
                 }
             }
         }

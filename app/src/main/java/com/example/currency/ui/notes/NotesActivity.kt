@@ -55,7 +55,7 @@ class NotesActivity : AppCompatActivity() {
         val notes = MySharedPreferences.getArrayListValue(NOTES)
         if (!notes.isNullOrEmpty()) {
             for (note in notes) {
-                addNote(note.expenses.toString(),note.income.toString())
+                addNote(note.expenses.toString(), note.income.toString())
             }
         }
     }
@@ -131,8 +131,28 @@ class NotesActivity : AppCompatActivity() {
         stub.layoutResource = R.layout.note_item
         notesContainer.addView(stub)
         val inflatedView = stub.inflate()
+        inflatedView.setOnLongClickListener {
+            showDeleteNoteDialog(it)
+            true
+        }
         inflatedView.findViewById<TextView>(R.id.expensesNoteTV).text = expensesText
         inflatedView.findViewById<TextView>(R.id.incomeNoteTV).text = incomeText
+    }
+
+    private fun removeView(inflatedView: View) {
+        (inflatedView.parent as LinearLayout).removeView(inflatedView)
+        val notes = MySharedPreferences.getArrayListValue(NOTES)
+        val expense = inflatedView.findViewById<TextView>(R.id.expensesNoteTV).text
+        val income = inflatedView.findViewById<TextView>(R.id.incomeNoteTV).text
+        for (note in notes) {
+            if (note.expenses == expense && note.income == income) {
+                notes.remove(note)
+                break
+            }
+        }
+        notesArray.clear()
+        notesArray = notes
+        MySharedPreferences.setArrayListValue(NOTES, notesArray)
     }
 
     private fun saveNote(expensesText: String, incomeText: String) {
@@ -144,6 +164,46 @@ class NotesActivity : AppCompatActivity() {
         notesArray = notes
         notesArray.add(noteObj)
         MySharedPreferences.setArrayListValue(NOTES, notesArray)
+    }
+
+    @SuppressLint("InflateParams")
+    fun showDeleteNoteDialog(view: View) {
+        val layoutInflater =
+            this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layout: View = layoutInflater.inflate(R.layout.delete_note_dialog_layout, null)
+
+        val yesBtn = layout.findViewById<Button>(R.id.yesBtn)
+        val noBtn = layout.findViewById<Button>(R.id.noBtn)
+
+        addNotePopup = PopupWindow(this@NotesActivity)
+        addNotePopup?.contentView = layout
+        addNotePopup?.width = LinearLayout.LayoutParams.MATCH_PARENT
+        addNotePopup?.height = LinearLayout.LayoutParams.MATCH_PARENT
+        addNotePopup?.isFocusable = true
+        addNotePopup?.isOutsideTouchable = false
+        addNotePopup?.setBackgroundDrawable(
+            BitmapDrawable(
+                this@NotesActivity.resources,
+                null as Bitmap?
+            )
+        )
+
+        alphaLayout.visibility = View.VISIBLE
+
+        addNotePopup?.setOnDismissListener {
+            alphaLayout.visibility = View.GONE
+        }
+
+        yesBtn.setOnClickListener {
+            removeView(view)
+            addNotePopup?.dismiss()
+        }
+
+        noBtn.setOnClickListener {
+            addNotePopup?.dismiss()
+        }
+
+        addNotePopup?.showAtLocation(rootView, Gravity.NO_GRAVITY, 0, 0)
     }
 
 }

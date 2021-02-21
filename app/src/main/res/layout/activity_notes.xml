@@ -80,6 +80,17 @@
 
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/addNoteContainer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:text="@string/toDeleteNote" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
